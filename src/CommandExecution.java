@@ -71,9 +71,9 @@ public class CommandExecution {
      */
     public void search(String id) throws IOException
     {
-        boolean found = this.tab.hasStringID(id);
-        if (found) {
-            System.out.println("Sequence found: " + id);
+        String found = this.tab.hasID(id);
+        if (!found.equals("")) {
+            System.out.println("Sequence found: " + found);
         }
         else {
             System.out.println("SequenceID " + id + " not found");

@@ -113,6 +113,25 @@ public class HashTable {
     }
     
     /**
+     * Method to see if key is already in the HashTable
+     * 
+     * @param compare Record we are comparing to
+     * @return boolean if they key is in the table or not
+     * @throws IOException io
+     */
+    public String hasID(String compare) throws IOException {
+        for (int i = 0; i < this.size; i++) {
+            if (recs[i] != null && !recs[i].isTombstone()) {
+                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(
+                    compare)) {
+                    return mems.getHandleString(recs[i].getSeqHandle());
+                }
+            }
+        }
+        return "";
+    }
+    
+    /**
      * Mehtod to remove a record from hash array
      * @param compare compare to this string
      * @throws IOException io exception
