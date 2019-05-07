@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -15,9 +16,9 @@ public class DNAdbase
      * This is the main class and function that runs the project
      * 
      * @param args a string value to run the project
-     * @throws FileNotFoundException 
+     * @throws IOException 
      */
-    public static void main(String[] args) throws FileNotFoundException
+    public static void main(String[] args) throws IOException
     {
         //read file as an argument
         String fileName = args[0];
@@ -34,6 +35,14 @@ public class DNAdbase
             {
                 System.out.println("Not Null");
             }
+        }
+        
+        String test = "TACG";
+        byte[] rep = mem.getBinaryRep(test);
+        for (int i = 0; i < rep.length; i++)
+        {
+            System.out.println("hello");
+            System.out.println(rep[i]);
         }
        
     }
