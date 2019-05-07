@@ -23,7 +23,7 @@ public class CommandExecution {
     {
         tab = hashing;
         mem = meming;
-        hashTableSize = 512;
+        hashTableSize = tab.getHashSize();
     }
     
     /**
@@ -35,7 +35,8 @@ public class CommandExecution {
     public void insert(String sequenceId, String sequence) throws IOException
     {
         Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(sequence));
-        int hash = this.sfold(sequenceId);
+        int hash = (int)this.sfold(sequenceId);
+        System.out.println("Hash: "+ hash);
         boolean inserted = this.tab.hashValue(insertion, hash);
         if (inserted)
         {
@@ -43,6 +44,40 @@ public class CommandExecution {
         }
         
     }
+    
+    /**
+     * Search method
+     * @param id the string we are searching for
+     * @throws IOException io exception
+     */
+    public void search(String id) throws IOException
+    {
+        boolean found = this.tab.hasStringID(id);
+        if (found){
+            System.out.println("Sequence found: "+ id);
+        }
+        else {
+            System.out.println("Sequence " + id+ " not found");
+        }
+    }
+    
+    /**
+     * Method to remove a hash from the hashtable
+     * @param id String to remove
+     * @throws IOException IOexception
+     */
+    public void remove(String id) throws IOException
+    {
+        boolean found = this.tab.hasStringID(id);
+        if (found){
+            //remove vikram 
+           Record rem = this.tab.removeHash(id);
+           
+           System.out.println("Sequence removed "+ id+ ":\n"+ this.mem.getHandleString(rem.getSeqHandle()));
+            
+        }
+    }
+    
     /**
      * Method to print the Values in our database
      * @throws IOException io
@@ -55,7 +90,7 @@ public class CommandExecution {
         Record[] recs = this.tab.getRecords();
         if (this.numRecords > 0) {
             for (int i = 0; i < this.hashTableSize; i++) {
-                if (recs[i] != null) {
+                if (recs[i] != null && !recs[i].isTombstone()) {
                     Handle seqId = recs[i].getSeqIDHandle();
                     String id = this.mem.getHandleString(seqId);
                     System.out.println(id +
@@ -83,7 +118,7 @@ public class CommandExecution {
      * @param s string to be hashed
      * @return the hashed value
      */
-    public int sfold(String s) {
+    public long sfold(String s) {
         int intLength = s.length() / 4;
         long sum = 0;
         for (int j = 0; j < intLength; j++) {
@@ -103,7 +138,7 @@ public class CommandExecution {
         }
 
         sum = (sum * sum) >> 8;
-        return (int)(Math.abs(sum) % this.hashTableSize);
+        return(Math.abs(sum) % this.hashTableSize);
       }
 
 

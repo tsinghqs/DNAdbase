@@ -54,13 +54,13 @@ public class Parser {
                     int seqLength = Integer.parseInt(commands[2]);
                     line = this.scan.nextLine();
                     commando.insert(seqId, line);
-                }/**
+                }
                 else if (commands[0].equals("remove")) {
-                    System.out.println(commands[0]);
+                    commando.remove(commands[1]);
                 }
                 else if (commands[0].equals("search")) {
-                    System.out.println(commands[0]);
-                }**/
+                    commando.search(commands[1]);
+                }
                 else if (commands[0].equals("print")) {
                     commando.print();
                 }
