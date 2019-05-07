@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * Parser executes each command input.
  * 
@@ -13,7 +15,7 @@ public class Parser {
     /**
      * parseBoy executes each command.
      */
-    private MemoryManager parseBoy;
+    private Scanner scan;
 
 
     /**
@@ -24,9 +26,8 @@ public class Parser {
      * @param terms
      *            string commands
      */
-    public Parser(MemoryManager tree, String terms) {
-        parseBoy = tree;
-        input = terms;
+    public Parser(Scanner scan) {
+        this.scan = scan;
     }
 
 
@@ -34,29 +35,28 @@ public class Parser {
      * Parses input for commands.
      */
     public void parseString() {
+        while (scan.hasNextLine())
+        {
+        String line = scan.nextLine();
         String[] commands = input.trim().split("\\s+");
         if (commands.length == 2) {
             if (commands[0].equals("insert")) {
-                parseBoy.insert(commands[1]);
+                String seqId = commands[1];
+                int seqLength = Integer.parseInt(commands[2]);
+                line = scan.nextLine();
+                System.out.println(line);
             }
             else if (commands[0].equals("remove")) {
-                parseBoy.remove(commands[1]);
+                System.out.println(commands[0]);
             }
             else if (commands[0].equals("search")) {
-                parseBoy.search(commands[1]);
+                System.out.println(commands[0]);
             }
-            else if (commands[0].equals("print") && 
-                commands[1].equals("lengths")) {
-                parseBoy.printLengths();
-            }
-            else if (commands[0].equals("print") && 
-                commands[1].equals("stats")) {
-                parseBoy.printStats();
+            else if (commands[0].equals("print"))
+            {
+                System.out.println(commands[0]);
             }
         }
-        else if (commands.length == 1 
-            && commands[0].equals("print")) {
-            parseBoy.print();
         }
 
     }

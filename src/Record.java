@@ -60,5 +60,6 @@ public class Record
     public void setSeqHandle(Handle seqHandle) {
         this.seqHandle = seqHandle;
     }
+    
 
 }

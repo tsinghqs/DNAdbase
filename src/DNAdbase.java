@@ -23,6 +23,9 @@ public class DNAdbase
         String fileName = args[0];
         File file = new File(fileName);
         Scanner sc = new Scanner(file);
+        
+        Parser parse = new Parser(sc);
+        parse.parseString();
        
     }
 }
