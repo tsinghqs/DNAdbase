@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Class to create our hashtable
  * @author tsingh
@@ -34,8 +36,9 @@ public class HashTable {
      * 
      * @param hashing The record we are adding
      * @param sfold the computed hash function value
+     * @throws IOException io
      */
-    public boolean hashValue(Record hashing, int sfold) {
+    public boolean hashValue(Record hashing, int sfold) throws IOException {
         if (!this.hasKey(hashing)) {
             if (this.recs[sfold] == null) {
                 recs[sfold] = hashing;
@@ -62,8 +65,11 @@ public class HashTable {
      * 
      * @param compare Record we are comparing to
      * @return boolean if they key is in the table or not
+     * @throws IOException io
      */
-    public boolean hasKey(Record compare) {
+    public boolean hasKey(Record compare) throws IOException {
+        String comp = this.mems.getHandleString(compare.getSeqIDHandle());
+        System.out.println("String convert: "+comp+":");
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null) {
                 if (recs[i].getSeqIDHandle().offset == compare
