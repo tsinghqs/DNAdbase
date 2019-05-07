@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -27,8 +28,9 @@ public class CommandExecution {
      * Method to insert a sequence and sequence id
      * @param sequenceId sequence id
      * @param sequence sequence
+     * @throws IOException if there's IO
      */
-    public void insert(String sequenceId, String sequence)
+    public void insert(String sequenceId, String sequence) throws IOException
     {
         Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(sequence));
         int hash = this.sfold(sequenceId);

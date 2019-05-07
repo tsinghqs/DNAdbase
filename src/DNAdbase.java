@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 
@@ -23,7 +24,7 @@ public class DNAdbase
         //read file as an argument
         String fileName = args[0];
         File file = new File(fileName);   
-        File memFile = new File(args[2]);
+        RandomAccessFile memFile = new RandomAccessFile(args[2], "rw");
         HashTable hash = new HashTable(Integer.parseInt(args[1]));
         MemoryManager mem = new MemoryManager(memFile);
         
@@ -37,13 +38,6 @@ public class DNAdbase
             }
         }
         
-        String test = "TACG";
-        byte[] rep = mem.getBinaryRep(test);
-        for (int i = 0; i < rep.length; i++)
-        {
-            System.out.println("hello");
-            System.out.println(rep[i]);
-        }
        
     }
 }

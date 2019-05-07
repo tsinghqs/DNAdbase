@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -40,8 +41,9 @@ public class Parser {
 
     /**
      * Parses input for commands.
+     * @throws IOException if there is IO
      */
-    public void parseString() {
+    public void parseString() throws IOException {
         while (this.scan.hasNextLine())
         {
             String line = this.scan.nextLine();
@@ -52,7 +54,7 @@ public class Parser {
                     int seqLength = Integer.parseInt(commands[2]);
                     line = this.scan.nextLine();
                     commando.insert(seqId, line);
-                    System.out.println("Sequence ID" + seqId);
+                    System.out.println("Sequence ID: " + seqId);
                     System.out.println("Sequence" + line);
                     
                 }/**

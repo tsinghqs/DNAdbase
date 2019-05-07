@@ -122,7 +122,6 @@ public class MemoryManager
             {
                 char letter = itemChars[i];
                 
-                System.out.println("Char: " + letter);
                 
                 if (letter == 'C')
                 {
