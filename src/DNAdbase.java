@@ -24,9 +24,9 @@ public class DNAdbase
         //read file as an argument
         String fileName = args[0];
         File file = new File(fileName);   
-        RandomAccessFile memFile = new RandomAccessFile(args[2], "rw");
+        RandomAccessFile memFile = new RandomAccessFile(args[3], "rw");
         MemoryManager mem = new MemoryManager(memFile);
-        HashTable hash = new HashTable(Integer.parseInt(args[1]), mem);
+        HashTable hash = new HashTable(Integer.parseInt(args[2]), mem);
 
         Parser parse = new Parser(file, hash, mem);
         parse.parseString();
