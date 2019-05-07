@@ -42,8 +42,8 @@ public class HashTable {
                 return true;
             }
             else {
-                System.out.println("Comparing");
-                for (int i = (sfold - sfold % 32); i < 32; i++)
+                System.out.print("Comparing");
+                for (int i = (sfold - sfold % 32); i < (sfold - sfold % 32)+ 32; i++)
                 {
                     if (this.recs[i] == null)
                     {
