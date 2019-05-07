@@ -201,7 +201,7 @@ public class MemoryManager
         int num = 0;
         int off = binRep.getOffset();
         int len = binRep.getLength();
-        if (len % 4 == 0) {
+        if (len % 4 != 0) {
             num = 1;
         }
         num += len / 4;
@@ -237,5 +237,10 @@ public class MemoryManager
         }
         return strn.toString();
 
+    }
+    
+    public LinkedList<Handle> getFreelist()
+    {
+        return freelist;
     }
 }
