@@ -1,4 +1,5 @@
-import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.LinkedList;
 
 /**
@@ -8,14 +9,19 @@ import java.util.LinkedList;
  * 
  * 
  */
-public class MemoryManager           //handle length is string.length
+public class MemoryManager          
 {
-    private File memoryFile;
+    private RandomAccessFile memoryFile;
+    /**
+     * Offset in bytes for EOF in memoryFile.
+     */
+    private int eof;
     private LinkedList<Handle> freelist;
     
-    public MemoryManager(File memFile)
+    public MemoryManager(RandomAccessFile memFile)
     {
         memoryFile = memFile;
+        eof = 0;
         freelist = new LinkedList<Handle>();
     }
     
@@ -23,20 +29,55 @@ public class MemoryManager           //handle length is string.length
      * Stores item, the sequence or sequenceID
      * string, in binary representation to memoryFile,
      * and returns a Handle to that item.
-     * @param item The sequence or sequenceID to be stored
+     * @param item the sequence or sequenceID to be stored
      * @return a Handle to that item
+     * @throws IOException 
      */
-    public Handle storeItem(String item)
+    public Handle storeItem(String item) throws IOException
     {
         int length = item.length();
         
-        // to do: figure out offset from freelist, print binary rep of item to memfile
-        int offset = 0;
         byte[] rep = getBinaryRep(item);
+        int offset = firstFit(item);
+        int numBytes = rep.length;
         
+        memoryFile.write(rep, offset, numBytes);
         
         Handle itemHandle = new Handle(offset, length);
         return itemHandle;
+    }
+    
+    /**
+     * Gets the offset of the first free block
+     * in freelist that can accommodate item;
+     * updates that block's offset and length.
+     * If there are no free blocks that qualify, 
+     * returns eof.
+     * @param item the sequence or sequenceID to be stored
+     * @return the first valid offset where item can be stored
+     *         in memoryFile
+     */
+    public int firstFit(String item)
+    {
+        if (freelist.size() == 0)
+        {
+            return eof;
+        }
+        
+        int offset = eof;
+        
+        for (Handle freeBlock : freelist)
+        {
+            if (freeBlock.getLength() >= item.length())
+            {
+                offset = freeBlock.getOffset();
+                freeBlock.setOffset(offset + getNumBytes(item));
+                freeBlock.setLength(freeBlock.getLength() - item.length());
+                return offset;
+            }
+        }
+        
+        return offset;
     }
     
     /**
@@ -51,7 +92,7 @@ public class MemoryManager           //handle length is string.length
      * If the length of item is not divisible by 4,
      * then the remaining bits of the last byte in the 
      * byte[] will be 0s.
-     * @param item The sequence or sequenceID to be stored
+     * @param item the sequence or sequenceID to be stored
      * @return The byte[] representation of item
      */
     public byte[] getBinaryRep(String item)
@@ -118,5 +159,25 @@ public class MemoryManager           //handle length is string.length
         }
         
         return rep;
+    }
+    
+    /**
+     * Returns the number of bytes required
+     * to store item in memoryFile.
+     * @param item the sequence or sequenceID to be stored
+     * @return the number of bytes required
+     *         to store item in memoryFile
+     */
+    public int getNumBytes(String item)
+    {
+        char[] itemChars = item.toCharArray();
+        
+        int numBytes = itemChars.length / 4;
+        if (item.length() % 4 != 0)
+        {
+            numBytes++;
+        }
+        
+        return numBytes;
     }
 }
