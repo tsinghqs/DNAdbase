@@ -7,6 +7,7 @@ public class Handle {
 
     int offset;
     int length;
+    int bytes; 
     /**
      * Handle class constructor
      * @param offset offset to be stored
@@ -16,6 +17,7 @@ public class Handle {
     {
         this.offset = offset;
         this.length = length;
+        this.bytes = getNumBytes(this.length);
     }
     
     /**
@@ -37,6 +39,16 @@ public class Handle {
     }
     
     /**
+     * Method to get bytes
+     * @return num bytes of handle
+     */
+    public int getBytes()
+    {
+        return this.bytes;
+    }
+    
+    
+    /**
      * Method to set a new offset
      * @param newOffset
      */
@@ -52,5 +64,24 @@ public class Handle {
     public void setLength(int newLen)
     {
         this.length = newLen;
+    }
+    
+    /**
+     * Method to set 
+     * @param newBytes New bytes to be set
+     */
+    public void setBytes(int newBytes)
+    {
+        this.bytes = newBytes;
+    }
+    
+    public int getNumBytes(int len)
+    {        
+        int numBytes = len / 4;
+        if (len % 4 != 0)
+        {
+            numBytes++;
+        }
+        return numBytes;
     }
 }

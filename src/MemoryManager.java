@@ -123,17 +123,30 @@ public class MemoryManager
     {
         int itemOffset = itemHandle.getOffset();
         int position = 0;
-        for (int i = 0; i < freelist.size(); i++)
+//        for (int i = 0; i < freelist.size() - 1; i++)
+//        {
+//            if (freelist.get(i).getOffset() < itemOffset 
+//                && freelist.get(i + 1).getOffset() > itemOffset)
+//            {
+//                position = i + 1;
+//                break;
+//            }
+//        }
+        
+        while (position < freelist.size() 
+            && freelist.get(position).getOffset() < itemOffset)
         {
-            if (freelist.get(i).getOffset() > itemOffset)
-            {
-                position = i;
-                break;
-            }
+            position++;
         }
         freelist.add(position, itemHandle);
         
+        //System.out.println("Freeblock added!");
+        //printFreelist();
+        
         updateFreelist();
+        
+        //System.out.println("Freelist updated!");
+        //printFreelist();
     }
     
     /**
@@ -153,8 +166,8 @@ public class MemoryManager
             Handle nextBlock = freelist.get(i + 1);
             if (isAdjacent(thisBlock, nextBlock))
             {
-                thisBlock.setLength(thisBlock.getLength() 
-                    + nextBlock.getLength());
+                thisBlock.setBytes(thisBlock.getBytes() 
+                    + nextBlock.getBytes());
                 freelist.remove(i + 1);
                 i = -1;
             }
@@ -181,9 +194,21 @@ public class MemoryManager
     public boolean isAdjacent(Handle freeblock1, Handle freeblock2)
     {
         int offset1 = freeblock1.getOffset();
-        int fb1bytes = getNumBytes(freeblock1.getLength());
+        //int fb1bytes = getNumBytes(freeblock1.getLength());
+        int bytes1 = freeblock1.getBytes();
         int offset2 = freeblock2.getOffset();
-        return (offset1 + fb1bytes) == offset2;
+        return (offset1 + bytes1) == offset2;
+    }
+    
+    public void printFreelist()
+    {
+        for (int i = 0; i < freelist.size(); i++)
+        {
+            Handle curr = freelist.get(i);
+            System.out.printf("[Block %d] Starting Byte" + 
+                " Location: %d, Size %d bytes\n", 
+                i + 1, curr.getOffset(), curr.getBytes());
+        }
     }
     
     /**
