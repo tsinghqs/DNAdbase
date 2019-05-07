@@ -17,6 +17,7 @@ public class Record
      * The handle for the sequence.
      */
     private Handle seqHandle;
+    private boolean tombstone = false;
     
     /**
      * Record's constructor.
@@ -52,7 +53,15 @@ public class Record
     public Handle getSeqHandle() {
         return seqHandle;
     }
-
+    
+    public void makeTombstone()
+    {
+        this.tombstone = true;
+    }
+    
+    public boolean isTombstone() {
+        return this.tombstone;
+    }
     /**
      * Sets the sequence handle.
      * @param seqHandle the seqHandle to set
