@@ -31,10 +31,8 @@ public class HashTable {
     /**
      * Method to add a record to the array
      * 
-     * @param hashing
-     *            The record we are adding
-     * @param sfold
-     *            the computed hash function value
+     * @param hashing The record we are adding
+     * @param sfold the computed hash function value
      */
     public boolean hashValue(Record hashing, int sfold) {
         if (!this.hasKey(hashing)) {
@@ -60,8 +58,7 @@ public class HashTable {
     /**
      * Method to see if key is already in the HashTable
      * 
-     * @param compare
-     *            Record we are comparing to
+     * @param compare Record we are comparing to
      * @return boolean if they key is in the table or not
      */
     public boolean hasKey(Record compare) {
