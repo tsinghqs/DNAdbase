@@ -56,7 +56,11 @@ public class HashTable {
         return false;
     }
 
-
+    /**
+     * Method to see if key is already in the HashTable
+     * @param compare Record we are comparing to 
+     * @return boolean if they key is in the table or not
+     */
     public boolean hasKey(Record compare)
     {
         for (int i = 0; i < this.size; i++)
