@@ -54,9 +54,11 @@ public class MemoryManager           //handle length is string.length
      * @param item The sequence or sequenceID to be stored
      * @return The byte[] representation of item
      */
-    private byte[] getBinaryRep(String item)
-    {
-        int numBytes = item.length() / 4;
+    public byte[] getBinaryRep(String item)
+    {   
+        char[] itemChars = item.toCharArray();
+        
+        int numBytes = itemChars.length / 4;
         int fillerLetters = 0;
         if (item.length() % 4 != 0)
         {
@@ -64,9 +66,10 @@ public class MemoryManager           //handle length is string.length
             fillerLetters += 4 - (item.length() % 4);
         }
         
+        //System.out.println("numBytes: " + numBytes);
+        
         byte[] rep = new byte[numBytes];
         
-        char[] itemChars = item.toCharArray();
         int currByte = 0;
         int remainingLettersInCurrByte = 4;
         int canvas = 0;
@@ -77,6 +80,9 @@ public class MemoryManager           //handle length is string.length
             if (i < itemChars.length)
             {
                 char letter = itemChars[i];
+                
+                System.out.println("Char: " + letter);
+                
                 if (letter == 'C')
                 {
                     letterBits = 1;
@@ -91,13 +97,20 @@ public class MemoryManager           //handle length is string.length
                 }
             }
             
-            canvas = canvas & letterBits;
-            canvas = canvas << (2 * (remainingLettersInCurrByte - 1));
+            //System.out.println("letterBits: " + letterBits);
+            
+            //canvas = canvas | letterBits;
+            //canvas = canvas << (2 * (remainingLettersInCurrByte - 1));
+            int shiftAmt = 2 * (remainingLettersInCurrByte - 1);
+            canvas += (letterBits * (int) Math.pow(2, shiftAmt));
+            
+            //System.out.println("canvas: " + canvas);
+            
             remainingLettersInCurrByte--;
             
             if (remainingLettersInCurrByte == 0)
             {
-                rep[currByte] = (byte)canvas;
+                rep[currByte] = (byte)(canvas); //& 0xFF);
                 currByte++;
                 canvas = 0;
                 remainingLettersInCurrByte = 4;
