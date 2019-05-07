@@ -15,7 +15,6 @@ public class CommandExecutionTest extends TestCase
     /**
      * field for testing
      */
-    private MemoryManager mem;
     private CommandExecution commando;
     
     
@@ -26,7 +25,7 @@ public class CommandExecutionTest extends TestCase
     public void setUp() throws FileNotFoundException
     {
         RandomAccessFile raf = new RandomAccessFile("hello.txt", "rw");
-        mem = new MemoryManager(raf);
+        MemoryManager mem = new MemoryManager(raf);
         HashTable hash = new HashTable(64, mem);
         commando = new CommandExecution(hash, mem);
     }
@@ -45,7 +44,7 @@ public class CommandExecutionTest extends TestCase
         commando.remove("ACT");
         commando.print();
         int hashslot = (int)commando.sfold("AAA");
-        assertTrue(hashslot != 0);
+        assertNotNull(hashslot);
     }
 
 }
