@@ -28,6 +28,7 @@ public class DNAdbase
 
         Parser parse = new Parser(file, hash, mem);
         parse.parseString();
+        memFile.close();
         
        
     }
