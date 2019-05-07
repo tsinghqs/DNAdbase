@@ -38,10 +38,19 @@ public class MemoryManager
         int length = item.length();
         
         byte[] rep = getBinaryRep(item);
-        int offset = firstFit(item);
         int numBytes = rep.length;
+        int offset = firstFit(item);
+        if (offset == eof)
+        {
+            memoryFile.seek(memoryFile.length());
+            memoryFile.write(rep);
+        }
+        else
+        {
+            memoryFile.write(rep, offset, numBytes);
+        }
         
-        memoryFile.write(rep, offset, numBytes);
+        eof = (int)memoryFile.length();
         
         Handle itemHandle = new Handle(offset, length);
         return itemHandle;
@@ -63,7 +72,6 @@ public class MemoryManager
         
         if (freelist.size() == 0)
         {
-            eof += getNumBytes(item);
             return offset;
         }
         
@@ -78,7 +86,6 @@ public class MemoryManager
             }
         }
         
-        eof += getNumBytes(item);
         return offset;
     }
     
