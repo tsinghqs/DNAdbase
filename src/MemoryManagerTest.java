@@ -15,7 +15,7 @@ public class MemoryManagerTest extends TestCase
      * field for testing
      */
     private MemoryManager mem;
-    private RandomAccessFile raf;
+    
     
     /**
      * setup
@@ -23,7 +23,7 @@ public class MemoryManagerTest extends TestCase
      */
     public void setUp() throws FileNotFoundException
     {
-        raf = new RandomAccessFile("hello.txt", "rw");
+        RandomAccessFile raf = new RandomAccessFile("hello.txt", "rw");
         mem = new MemoryManager(raf);
     }
     

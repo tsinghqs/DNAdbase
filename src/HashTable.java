@@ -48,6 +48,7 @@ public class HashTable {
      * @param hashing The record we are adding
      * @param sfold the computed hash function value
      * @throws IOException io
+     * @return whether or not value was hashed
      */
     public boolean hashValue(Record hashing, int sfold) throws IOException {
 
