@@ -41,6 +41,37 @@ public class CommandExecution {
         }
         
     }
+    /**@Override
+    public void print() throws IOException {
+        LinkedList<Handle> list = 
+            this.mem.getList();
+        System.out.print("Sequence IDs:");
+        System.out.println();
+        if (this.numRecords > 0) {
+            for (int i = 0; i < this.capacity(); i++) {
+                if (this.records[i] != null && 
+                    !this.records[i].isTombstone()) {
+                    Handle seqId = records[i].getSeqID();
+                    String id = mem.getHandleInfo(seqId);
+                    System.out.println(id +
+                        ": hash slot [" + i + "]");
+                }
+            }
+        }
+        System.out.print("Free Block List:");
+        if (list.size() == 0) {
+            System.out.println(" none");
+        }
+        else {
+            System.out.println();
+            for (int i = 0; i < list.size(); i++) {
+                Handle hand = list.get(i);
+                System.out.printf("[Block %d] Starting Byte" + 
+                    " Location: %d, Size %d bytes\n", 
+                    i + 1, hand.getOffset(), hand.getLength());
+            }
+        }
+    }**/
     
     /**
      * Method to get hash for a String

@@ -25,9 +25,9 @@ public class DNAdbase
         String fileName = args[0];
         File file = new File(fileName);   
         RandomAccessFile memFile = new RandomAccessFile(args[2], "rw");
-        HashTable hash = new HashTable(Integer.parseInt(args[1]));
         MemoryManager mem = new MemoryManager(memFile);
-        
+        HashTable hash = new HashTable(Integer.parseInt(args[1]), mem);
+
         Parser parse = new Parser(file, hash, mem);
         parse.parseString();
         for (int i = 0; i < 512; i++)

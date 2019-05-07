@@ -6,13 +6,14 @@
 public class HashTable {
 
     Record[] recs;
+    MemoryManager mems;
     int size;
     
     /**
      * Hashtable constructor
      * @param size size of hashtable
      */
-    public HashTable(int size)
+    public HashTable(int size, MemoryManager mems)
     {
         recs = new Record[size];
         this.size = size;
@@ -41,6 +42,7 @@ public class HashTable {
                 return true;
             }
             else {
+                System.out.println("Comparing");
                 for (int i = (sfold - sfold % 32); i < 32; i++)
                 {
                     if (this.recs[i] == null)
@@ -64,8 +66,8 @@ public class HashTable {
     public boolean hasKey(Record compare) {
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null) {
-                if (recs[i].getSeqIDHandle().getOffset() == compare
-                    .getSeqIDHandle().getOffset()) {
+                if (recs[i].getSeqIDHandle().offset == compare
+                    .getSeqIDHandle().offset) {
                     return true;
                 }
             }
