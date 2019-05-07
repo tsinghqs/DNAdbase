@@ -37,10 +37,19 @@ public class CommandExecution {
         Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(sequence));
         int hash = (int)this.sfold(sequenceId);
         System.out.println("Hash: "+ hash);
-        boolean inserted = this.tab.hashValue(insertion, hash);
-        if (inserted)
+        if (!this.tab.hasKey(insertion))
         {
-            numRecords++;
+            boolean inserted = this.tab.hashValue(insertion, hash);
+            if (inserted)
+            {
+                this.numRecords++;
+            }
+            else {
+                System.out.println("Bucket full.Sequence " + sequenceId + " could not be inserted");
+            }
+        }
+        else {
+            System.out.println("SequenceID "+ sequenceId+ " already exists");
         }
         
     }
@@ -72,9 +81,11 @@ public class CommandExecution {
         if (found){
             //remove vikram 
            Record rem = this.tab.removeHash(id);
-           
            System.out.println("Sequence removed "+ id+ ":\n"+ this.mem.getHandleString(rem.getSeqHandle()));
-            
+           this.numRecords--;
+        }
+        else {
+            System.out.println("SequenceID "+ id+ " not found");
         }
     }
     

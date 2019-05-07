@@ -49,34 +49,29 @@ public class HashTable {
      * @throws IOException io
      */
     public boolean hashValue(Record hashing, int sfold) throws IOException {
-        if (!this.hasKey(hashing)) {
-            if (this.recs[sfold] == null || this.recs[sfold].isTombstone()) {
-                recs[sfold] = hashing;
-                return true;
-            }
-            else {
-                for (int i = sfold; i < (sfold - sfold % 32)+ 32; i++)
-                {
-                    if (this.recs[i] == null || this.recs[i].isTombstone())
-                    {
-                        recs[i] = hashing;
-                        return true;
-                    }
+
+        if (this.recs[sfold] == null || this.recs[sfold].isTombstone()) {
+            recs[sfold] = hashing;
+            return true;
+        }
+        else {
+            for (int i = sfold; i < (sfold - sfold % 32) + 32; i++) {
+                if (this.recs[i] == null || this.recs[i].isTombstone()) {
+                    recs[i] = hashing;
+                    return true;
                 }
-                for (int i = (sfold - sfold %32); i < sfold; i++)
-                {
-                    if (this.recs[i] == null || this.recs[i].isTombstone())
-                    {
-                        recs[i] = hashing;
-                        return true;
-                    }
+            }
+            for (int i = (sfold - sfold % 32); i < sfold; i++) {
+                if (this.recs[i] == null || this.recs[i].isTombstone()) {
+                    recs[i] = hashing;
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    
+
     /**
      * Method to see if key is already in the HashTable
      * 
