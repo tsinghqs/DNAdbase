@@ -15,13 +15,13 @@ public class MemoryManager
     /**
      * Offset in bytes for EOF in memoryFile.
      */
-    private int eof;
+    //private int eof;
     private LinkedList<Handle> freelist;
     
     public MemoryManager(RandomAccessFile memFile)
     {
         memoryFile = memFile;
-        eof = 0;
+        //eof = 0;
         freelist = new LinkedList<Handle>();
     }
     
@@ -40,7 +40,8 @@ public class MemoryManager
         byte[] rep = getBinaryRep(item);
         int numBytes = rep.length;
         int offset = firstFit(item);
-        if (offset == eof)
+        //if (offset == eof)
+        if (offset == memoryFile.length())
         {
             memoryFile.seek(memoryFile.length());
             memoryFile.write(rep);
@@ -50,7 +51,7 @@ public class MemoryManager
             memoryFile.write(rep, offset, numBytes);
         }
         
-        eof = (int)memoryFile.length();
+        //eof = (int)memoryFile.length();
         
         Handle itemHandle = new Handle(offset, length);
         return itemHandle;
@@ -65,10 +66,11 @@ public class MemoryManager
      * @param item the sequence or sequenceID to be stored
      * @return the first valid offset where item can be stored
      *         in memoryFile
+     * @throws IOException 
      */
-    public int firstFit(String item)
+    public int firstFit(String item) throws IOException
     {
-        int offset = eof;
+        int offset = (int) memoryFile.length();
         
         if (freelist.size() == 0)
         {
@@ -87,6 +89,98 @@ public class MemoryManager
         }
         
         return offset;
+    }
+    
+    /**
+     * Removes sequenceID and sequence of
+     * target. Does not physically delete
+     * their respective bytes in memoryFile,
+     * but treats their allocated memories
+     * as free blocks. Decreases the length
+     * of memoryFile
+     * @param target the record containing
+     *        the handles to the items to 
+     *        be removed
+     * @throws IOException 
+     */
+    public void remove(Record target) throws IOException
+    {
+        remove(target.getSeqIDHandle());
+        remove(target.getSeqHandle());
+    }
+    
+    /**
+     * Removes item. Does not physically delete
+     * its respective bytes in memoryFile,
+     * but treats its allocated memory
+     * as a free block.
+     * @param itemHandle the handle of the
+     *                   the item to be 
+     *                   removed
+     * @throws IOException 
+     */
+    public void remove(Handle itemHandle) throws IOException
+    {
+        int itemOffset = itemHandle.getOffset();
+        for (int i = 0; i < freelist.size(); i++)
+        {
+            if (freelist.get(i).getOffset() > itemOffset)
+            {
+                freelist.add(i, itemHandle);
+                break;
+            }
+        }
+        updateFreelist();
+    }
+    
+    /**
+     * Merges any adjacent free blocks.
+     * If the last free block is adjacent
+     * to EOF, that block is removed from
+     * freelist, and the length of 
+     * memoryFile is decremented accordingly.
+     * @throws IOException 
+     */
+    public void updateFreelist() throws IOException
+    {
+        // merge adjacent free blocks
+        for (int i = 0; i < freelist.size() - 1; i++)
+        {
+            Handle thisBlock = freelist.get(i);
+            Handle nextBlock = freelist.get(i + 1);
+            if (isAdjacent(thisBlock, nextBlock))
+            {
+                thisBlock.setLength(thisBlock.getLength() 
+                    + nextBlock.getLength());
+                freelist.remove(i + 1);
+                i = -1;
+            }
+        }
+        
+        // decrement memoryFile size if needed
+        Handle lastBlock = freelist.peekLast();
+        int offset = lastBlock.getOffset();
+        int bytes = getNumBytes(lastBlock.getLength());
+        if (offset + bytes == memoryFile.length())
+        {
+            freelist.removeLast();
+            memoryFile.setLength(memoryFile.length() - bytes);
+        }
+    }
+        
+    /**
+     * Determines whether two consecutive blocks 
+     * in freelist are adjacent in memory.
+     * @param freeblock1 the first free block
+     * @param freeblock2 the second free block
+     * @return whether two free blocks are adjacent
+     */
+    public boolean isAdjacent(Handle freeblock1, Handle freeblock2)
+    {
+        int offset1 = freeblock1.getOffset();
+        int fb1bytes = getNumBytes(freeblock1.getLength());
+        int offset2 = freeblock2.getOffset();
+        return (offset1 + fb1bytes) == offset2;
     }
     
     /**
@@ -186,6 +280,25 @@ public class MemoryManager
             numBytes++;
         }
         
+        return numBytes;
+    }
+    
+    /**
+     * Returns the number of bytes required
+     * to store any item in memoryFile with
+     * length len.
+     * @param len the number of characters
+     * @return the number of bytes required
+     *         to store any item in memoryFile 
+     *         with length len
+     */
+    public int getNumBytes(int len)
+    {        
+        int numBytes = len / 4;
+        if (len % 4 != 0)
+        {
+            numBytes++;
+        }
         return numBytes;
     }
     
