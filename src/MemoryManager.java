@@ -122,14 +122,17 @@ public class MemoryManager
     public void remove(Handle itemHandle) throws IOException
     {
         int itemOffset = itemHandle.getOffset();
+        int position = 0;
         for (int i = 0; i < freelist.size(); i++)
         {
             if (freelist.get(i).getOffset() > itemOffset)
             {
-                freelist.add(i, itemHandle);
+                position = i;
                 break;
             }
         }
+        freelist.add(position, itemHandle);
+        
         updateFreelist();
     }
     
