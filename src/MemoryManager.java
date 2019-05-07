@@ -173,7 +173,7 @@ public class MemoryManager
                 thisBlock.setBytes(thisBlock.getBytes() 
                     + nextBlock.getBytes());
                 freelist.remove(i + 1);
-                i -= 1;
+                i = -1;
             }
         }
         
