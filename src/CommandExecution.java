@@ -65,7 +65,7 @@ public class CommandExecution {
             System.out.println("Sequence found: "+ id);
         }
         else {
-            System.out.println("Sequence " + id+ " not found");
+            System.out.println("SequenceID " + id+ " not found");
         }
     }
     
