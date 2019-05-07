@@ -180,4 +180,54 @@ public class MemoryManager
         
         return numBytes;
     }
+    
+    /**
+     * Gets string from a handle offset
+     * 
+     * @param binRep input handle
+     * @return String representation of Handle bytes
+     * @throws IOException If can't seek
+     */
+    public String getHandleString(Handle binRep) throws IOException {
+        StringBuilder strn = new StringBuilder();
+        int num = 0;
+        int off = binRep.getOffset();
+        int len = binRep.getLength();
+        if (len % 4 == 0) {
+            num = 1;
+        }
+        num += len / 4;
+        byte[] bytes = new byte[num];
+        memoryFile.seek(off);
+        memoryFile.read(bytes);
+        int appCount = 0;
+        for (int i = 0; i < num; i++) {
+            String s1 = String.format("%8s", Integer.toBinaryString(bytes[i]
+                & 0xFF)).replace(' ', '0');
+            for (int j = 0; j < 8; j++) {
+                String check = s1.substring(j, j + 1);
+                if (check.equals("00")) {
+                    strn.append("A");
+                }
+                else if (check.equals("01")) {
+                    strn.append("C");
+                }
+                else if (check.equals("10")) {
+                    strn.append("G");
+                }
+                else if (check.equals("11")) {
+                    strn.append("T");
+                }
+                appCount++;
+                if (appCount == len) {
+                    break;
+                }
+            }
+            if (appCount == len) {
+                break;
+            }
+        }
+        return strn.toString();
+
+    }
 }
