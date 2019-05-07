@@ -59,12 +59,13 @@ public class MemoryManager
      */
     public int firstFit(String item)
     {
+        int offset = eof;
+        
         if (freelist.size() == 0)
         {
-            return eof;
+            eof += getNumBytes(item);
+            return offset;
         }
-        
-        int offset = eof;
         
         for (Handle freeBlock : freelist)
         {
@@ -77,6 +78,7 @@ public class MemoryManager
             }
         }
         
+        eof += getNumBytes(item);
         return offset;
     }
     
