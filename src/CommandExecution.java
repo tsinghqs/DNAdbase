@@ -119,7 +119,7 @@ public class CommandExecution {
                 Handle hand = list.get(i);
                 System.out.printf("[Block %d] Starting Byte" + 
                     " Location: %d, Size %d bytes\n", 
-                    i + 1, hand.getOffset(), hand.getLength());
+                    i + 1, hand.getOffset(), hand.getBytes());
             }
         }
     }
