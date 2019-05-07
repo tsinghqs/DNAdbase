@@ -36,7 +36,6 @@ public class CommandExecution {
     {
         Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(sequence));
         int hash = (int)this.sfold(sequenceId);
-        System.out.println("Hash: "+ hash);
         if (!this.tab.hasKey(insertion))
         {
             boolean inserted = this.tab.hashValue(insertion, hash);
