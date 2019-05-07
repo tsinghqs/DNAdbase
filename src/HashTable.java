@@ -2,18 +2,19 @@ import java.io.IOException;
 
 /**
  * Class to create our hashtable
- * @author tsingh
- *
+ * @author tsingh tsinghqs
+ * @version 2019
  */
 public class HashTable {
 
-    Record[] recs;
-    MemoryManager mems;
-    int size;
+    private Record[] recs;
+    private MemoryManager mems;
+    private int size;
     
     /**
      * Hashtable constructor
      * @param size size of hashtable
+     * @param mems the memory manager
      */
     public HashTable(int size, MemoryManager mems)
     {
@@ -33,7 +34,7 @@ public class HashTable {
     
     /**
      * Getter method for size of hashtable
-     * @return hashsize
+     * @return hashsize the size of hashtable
      */
     public int getHashSize()
     {
@@ -82,8 +83,8 @@ public class HashTable {
     public boolean hasKey(Record compare) throws IOException {
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null && !recs[i].isTombstone()) {
-                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(this.mems.getHandleString(compare
-                    .getSeqIDHandle()))) {
+                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(
+                    this.mems.getHandleString(compare.getSeqIDHandle()))) {
                     return true;
                 }
             }
@@ -101,7 +102,8 @@ public class HashTable {
     public boolean hasStringID(String compare) throws IOException {
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null && !recs[i].isTombstone()) {
-                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(compare)) {
+                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(
+                    compare)) {
                     return true;
                 }
             }
@@ -113,12 +115,14 @@ public class HashTable {
      * Mehtod to remove a record from hash array
      * @param compare compare to this string
      * @throws IOException io exception
+     * @return the record to be removed
      */
     public Record removeHash(String compare) throws IOException
     {
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null && !recs[i].isTombstone()) {
-                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(compare)) {
+                if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(
+                    compare)) {
                     recs[i].makeTombstone();
                     return recs[i];
                 }
@@ -126,8 +130,6 @@ public class HashTable {
         }
         return null;
     }
-
-    
     
     
 }

@@ -18,6 +18,10 @@ public class MemoryManager
     //private int eof;
     private LinkedList<Handle> freelist;
     
+    /**
+     * Memory Manager class
+     * @param memFile the random access file
+     */
     public MemoryManager(RandomAccessFile memFile)
     {
         memoryFile = memFile;
@@ -200,6 +204,9 @@ public class MemoryManager
         return (offset1 + bytes1) == offset2;
     }
     
+    /**
+     * Method to print the free space
+     */
     public void printFreelist()
     {
         for (int i = 0; i < freelist.size(); i++)
@@ -229,65 +236,57 @@ public class MemoryManager
     public byte[] getBinaryRep(String item)
     {   
         char[] itemChars = item.toCharArray();
-        
+
         int numBytes = itemChars.length / 4;
         int fillerLetters = 0;
-        if (item.length() % 4 != 0)
-        {
+        if (item.length() % 4 != 0) {
             numBytes++;
             fillerLetters += 4 - (item.length() % 4);
         }
-        
-        //System.out.println("numBytes: " + numBytes);
-        
+
+        // System.out.println("numBytes: " + numBytes);
+
         byte[] rep = new byte[numBytes];
-        
+
         int currByte = 0;
         int remainingLettersInCurrByte = 4;
         int canvas = 0;
-        for (int i = 0; i < itemChars.length + fillerLetters; i++)
-        {     
+        for (int i = 0; i < itemChars.length + fillerLetters; i++) {
             int letterBits = 0;
-            
-            if (i < itemChars.length)
-            {
+
+            if (i < itemChars.length) {
                 char letter = itemChars[i];
-                
-                
-                if (letter == 'C')
-                {
+
+                if (letter == 'C') {
                     letterBits = 1;
                 }
-                else if (letter == 'G')
-                {
+                else if (letter == 'G') {
                     letterBits = 2;
                 }
-                else if (letter == 'T')
-                {
+                else if (letter == 'T') {
                     letterBits = 3;
                 }
             }
-            
-            //System.out.println("letterBits: " + letterBits);
-            
-            //canvas = canvas | letterBits;
-            //canvas = canvas << (2 * (remainingLettersInCurrByte - 1));
+
+            // System.out.println("letterBits: " + letterBits);
+
+            // canvas = canvas | letterBits;
+            // canvas = canvas << (2 * (remainingLettersInCurrByte - 1));
             int shiftAmt = 2 * (remainingLettersInCurrByte - 1);
-            canvas += (letterBits * (int) Math.pow(2, shiftAmt));
-            
-            //System.out.println("canvas: " + canvas);
-            
+            canvas += (letterBits * (int)Math.pow(2, shiftAmt));
+
+            // System.out.println("canvas: " + canvas);
+
             remainingLettersInCurrByte--;
-            
-            if (remainingLettersInCurrByte == 0)
-            {
-                rep[currByte] = (byte)(canvas); //& 0xFF);
+
+            if (remainingLettersInCurrByte == 0) {
+                rep[currByte] = (byte)(canvas); // & 0xFF);
                 currByte++;
                 canvas = 0;
                 remainingLettersInCurrByte = 4;
-            } 
+            }
         }
-        
+
         return rep;
     }
     
@@ -353,7 +352,7 @@ public class MemoryManager
         for (int i = 0; i < num; i++) {
             String s1 = String.format("%8s", Integer.toBinaryString(bytes[i]
                 & 0xFF)).replace(' ', '0');
-            for (int j = 0; j < 8; j+=2) {
+            for (int j = 0; j < 8; j += 2) {
                 String check = s1.substring(j, j + 2);
                 if (check.equals("00")) {
                     strn.append("A");
@@ -380,6 +379,10 @@ public class MemoryManager
 
     }
     
+    /**
+     * Method to return list of free spots
+     * @return the freeList array
+     */
     public LinkedList<Handle> getFreelist()
     {
         return freelist;

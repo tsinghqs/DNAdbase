@@ -54,11 +54,18 @@ public class Record
         return seqHandle;
     }
     
+    /**
+     * Method to make a record into tombstone
+     */
     public void makeTombstone()
     {
         this.tombstone = true;
     }
     
+    /**
+     * Method to check tombstone
+     * @return whether or not the record is a tombstone
+     */
     public boolean isTombstone() {
         return this.tombstone;
     }

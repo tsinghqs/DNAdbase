@@ -26,18 +26,16 @@ public class RecordTest extends TestCase {
     /**
      * Test the handle methods
      */
-    public void testMethods()
-    {
+    public void testMethods() {
         Handle check = tester.getSeqHandle();
         Handle seqid = tester.getSeqIDHandle();
         tester.setSeqHandle(han);
         tester.setSeqIDHandle(han2);
         check = tester.getSeqHandle();
         seqid = tester.getSeqIDHandle();
+        assertEquals(seqid.getOffset(), tester.getSeqIDHandle().getOffset());
         assertEquals(check.getOffset(), tester.getSeqHandle().getOffset());
-        
-        
-        
+
     }
 
    

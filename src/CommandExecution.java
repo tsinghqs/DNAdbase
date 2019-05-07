@@ -1,23 +1,35 @@
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
 
 /**
  * Class to execute commands
- * @author tsingh
+ * @author tsingh tsinghqs
+ * @version 2019
  *
  */
 public class CommandExecution {
     
-    HashTable tab;
-    MemoryManager mem;
-    int hashTableSize;
-    int numRecords = 0;
+    /**
+     * @field Hashtable tab
+     */
+    private HashTable tab;
+    /**
+     * @field MemoryManager mem
+     */
+    private MemoryManager mem;
+    /**
+     * @field int hashtable size
+     */
+    private int hashTableSize;
+    /**
+     * @field numRecords
+     */
+    private int numRecords = 0;
     /**
      * Constructor for command executioner class
-     * @param hashTableSize size of hashtable
-     * @param memFile memory file
+     * @param hashing size of hashtable
+     * @param meming memory file
      */
     public CommandExecution(HashTable hashing, MemoryManager meming)
     {
@@ -32,25 +44,24 @@ public class CommandExecution {
      * @param sequence sequence
      * @throws IOException if there's IO
      */
-    public void insert(String sequenceId, String sequence) throws IOException
-    {
-        Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(sequence));
+    public void insert(String sequenceId, String sequence) throws IOException {
+        Record insertion = new Record(mem.storeItem(sequenceId), mem.storeItem(
+            sequence));
         int hash = (int)this.sfold(sequenceId);
-        if (!this.tab.hasKey(insertion))
-        {
+        if (!this.tab.hasKey(insertion)) {
             boolean inserted = this.tab.hashValue(insertion, hash);
-            if (inserted)
-            {
+            if (inserted) {
                 this.numRecords++;
             }
             else {
-                System.out.println("Bucket full.Sequence " + sequenceId + " could not be inserted");
+                System.out.println("Bucket full.Sequence " + sequenceId
+                    + " could not be inserted");
             }
         }
         else {
-            System.out.println("SequenceID "+ sequenceId+ " already exists");
+            System.out.println("SequenceID " + sequenceId + " already exists");
         }
-        
+
     }
     
     /**
@@ -61,14 +72,15 @@ public class CommandExecution {
     public void search(String id) throws IOException
     {
         boolean found = this.tab.hasStringID(id);
-        if (found){
-            System.out.println("Sequence found: "+ id);
+        if (found) {
+            System.out.println("Sequence found: " + id);
         }
         else {
-            System.out.println("SequenceID " + id+ " not found");
+            System.out.println("SequenceID " + id + " not found");
         }
     }
-    
+
+
     /**
      * Method to remove a hash from the hashtable
      * @param id String to remove
@@ -77,15 +89,16 @@ public class CommandExecution {
     public void remove(String id) throws IOException
     {
         boolean found = this.tab.hasStringID(id);
-        if (found){
-            //remove vikram 
-           Record rem = this.tab.removeHash(id);
-           mem.remove(rem);
-           System.out.println("Sequence removed "+ id+ ":\n"+ this.mem.getHandleString(rem.getSeqHandle()));
-           this.numRecords--;
+        if (found) {
+            // remove vikram
+            Record rem = this.tab.removeHash(id);
+            mem.remove(rem);
+            System.out.println("Sequence removed " + id + ":\n" + this.mem
+                .getHandleString(rem.getSeqHandle()));
+            this.numRecords--;
         }
         else {
-            System.out.println("SequenceID "+ id+ " not found");
+            System.out.println("SequenceID " + id + " not found");
         }
     }
     
@@ -124,33 +137,35 @@ public class CommandExecution {
         }
     }
     
+
     /**
      * Method to get hash for a String
-     * @param s string to be hashed
+     * 
+     * @param s
+     *            string to be hashed
      * @return the hashed value
      */
     public long sfold(String s) {
         int intLength = s.length() / 4;
         long sum = 0;
         for (int j = 0; j < intLength; j++) {
-          char c[] = s.substring(j * 4, (j * 4) + 4).toCharArray();
-          long mult = 1;
-          for (int k = 0; k < c.length; k++) {
-            sum += c[k] * mult;
-            mult *= 256;
-          }
+            char c[] = s.substring(j * 4, (j * 4) + 4).toCharArray();
+            long mult = 1;
+            for (int k = 0; k < c.length; k++) {
+                sum += c[k] * mult;
+                mult *= 256;
+            }
         }
 
-        char c[] = s.substring(intLength * 4).toCharArray();
+        char[] c = s.substring(intLength * 4).toCharArray();
         long mult = 1;
         for (int k = 0; k < c.length; k++) {
-          sum += c[k] * mult;
-          mult *= 256;
+            sum += c[k] * mult;
+            mult *= 256;
         }
 
         sum = (sum * sum) >> 8;
-        return(Math.abs(sum) % this.hashTableSize);
-      }
-
+        return (Math.abs(sum) % this.hashTableSize);
+    }
 
 }
