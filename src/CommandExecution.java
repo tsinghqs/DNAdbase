@@ -80,6 +80,7 @@ public class CommandExecution {
         if (found){
             //remove vikram 
            Record rem = this.tab.removeHash(id);
+           mem.remove(rem);
            System.out.println("Sequence removed "+ id+ ":\n"+ this.mem.getHandleString(rem.getSeqHandle()));
            this.numRecords--;
         }
