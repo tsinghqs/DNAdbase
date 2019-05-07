@@ -54,6 +54,7 @@ public class CommandExecution {
                 this.numRecords++;
             }
             else {
+                mem.remove(insertion);
                 System.out.println("Bucket full.Sequence " + sequenceId
                     + " could not be inserted");
             }
