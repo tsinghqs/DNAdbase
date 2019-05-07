@@ -17,6 +17,7 @@ public class HashTable {
      */
     public HashTable(int size, MemoryManager mems)
     {
+        this.mems = mems;
         recs = new Record[size];
         this.size = size;
     }
@@ -45,7 +46,6 @@ public class HashTable {
                 return true;
             }
             else {
-                System.out.print("Comparing");
                 for (int i = (sfold - sfold % 32); i < (sfold - sfold % 32)+ 32; i++)
                 {
                     if (this.recs[i] == null)
@@ -68,8 +68,6 @@ public class HashTable {
      * @throws IOException io
      */
     public boolean hasKey(Record compare) throws IOException {
-        String comp = this.mems.getHandleString(compare.getSeqIDHandle());
-        System.out.println("String convert: "+comp+":");
         for (int i = 0; i < this.size; i++) {
             if (recs[i] != null) {
                 if (recs[i].getSeqIDHandle().offset == compare

@@ -30,13 +30,6 @@ public class DNAdbase
 
         Parser parse = new Parser(file, hash, mem);
         parse.parseString();
-        for (int i = 0; i < 512; i++)
-        {
-            if (hash.getRecords()[i] != null)
-            {
-                System.out.println("Not Null");
-            }
-        }
         
        
     }

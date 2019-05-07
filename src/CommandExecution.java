@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 
 /**
@@ -12,6 +13,7 @@ public class CommandExecution {
     HashTable tab;
     MemoryManager mem;
     int hashTableSize;
+    int numRecords = 0;
     /**
      * Constructor for command executioner class
      * @param hashTableSize size of hashtable
@@ -37,22 +39,25 @@ public class CommandExecution {
         boolean inserted = this.tab.hashValue(insertion, hash);
         if (inserted)
         {
-            System.out.println("Inserted");
+            numRecords++;
         }
         
     }
-    /**@Override
+    /**
+     * Method to print the Values in our database
+     * @throws IOException io
+     */
     public void print() throws IOException {
         LinkedList<Handle> list = 
-            this.mem.getList();
+            this.mem.getFreelist();
         System.out.print("Sequence IDs:");
         System.out.println();
+        Record[] recs = this.tab.getRecords();
         if (this.numRecords > 0) {
-            for (int i = 0; i < this.capacity(); i++) {
-                if (this.records[i] != null && 
-                    !this.records[i].isTombstone()) {
-                    Handle seqId = records[i].getSeqID();
-                    String id = mem.getHandleInfo(seqId);
+            for (int i = 0; i < this.hashTableSize; i++) {
+                if (recs[i] != null) {
+                    Handle seqId = recs[i].getSeqIDHandle();
+                    String id = this.mem.getHandleString(seqId);
                     System.out.println(id +
                         ": hash slot [" + i + "]");
                 }
@@ -71,7 +76,7 @@ public class CommandExecution {
                     i + 1, hand.getOffset(), hand.getLength());
             }
         }
-    }**/
+    }
     
     /**
      * Method to get hash for a String

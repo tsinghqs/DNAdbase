@@ -212,8 +212,8 @@ public class MemoryManager
         for (int i = 0; i < num; i++) {
             String s1 = String.format("%8s", Integer.toBinaryString(bytes[i]
                 & 0xFF)).replace(' ', '0');
-            for (int j = 0; j < 8; j++) {
-                String check = s1.substring(j, j + 1);
+            for (int j = 0; j < 8; j+=2) {
+                String check = s1.substring(j, j + 2);
                 if (check.equals("00")) {
                     strn.append("A");
                 }
