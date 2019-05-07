@@ -68,6 +68,6 @@ public class MemoryManager           //handle length is string.length
         {
             
         }
-        
+        return rep;
     }
 }
