@@ -15,11 +15,11 @@ public class CommandExecution {
      * @param hashTableSize size of hashtable
      * @param memFile memory file
      */
-    public CommandExecution(int hashTableSize, File memFile)
+    public CommandExecution(HashTable hashing, MemoryManager meming)
     {
-        tab = new HashTable(hashTableSize);
-        mem = new MemoryManager(memFile);
-        this.hashTableSize = hashTableSize;
+        tab = hashing;
+        mem = meming;
+        hashTableSize = 512;
     }
     
     /**

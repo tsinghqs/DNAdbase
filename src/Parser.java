@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -15,7 +17,9 @@ public class Parser {
     /**
      * parseBoy executes each command.
      */
-    private Scanner scan;
+    Scanner scan;
+    HashTable hashboy;
+    MemoryManager memboy;
 
 
     /**
@@ -25,9 +29,12 @@ public class Parser {
      *            name of BST
      * @param terms
      *            string commands
+     * @throws FileNotFoundException if file not found
      */
-    public Parser(Scanner scan) {
-        this.scan = scan;
+    public Parser(File fp, HashTable hashing, MemoryManager meming) throws FileNotFoundException {
+        scan = new Scanner(fp);
+        hashboy = hashing;
+        memboy = meming;
     }
 
 
@@ -35,28 +42,30 @@ public class Parser {
      * Parses input for commands.
      */
     public void parseString() {
-        while (scan.hasNextLine())
+        while (this.scan.hasNextLine())
         {
-        String line = scan.nextLine();
-        String[] commands = input.trim().split("\\s+");
-        if (commands.length == 2) {
-            if (commands[0].equals("insert")) {
-                String seqId = commands[1];
-                int seqLength = Integer.parseInt(commands[2]);
-                line = scan.nextLine();
-                System.out.println(line);
-            }
-            else if (commands[0].equals("remove")) {
-                System.out.println(commands[0]);
-            }
-            else if (commands[0].equals("search")) {
-                System.out.println(commands[0]);
-            }
-            else if (commands[0].equals("print"))
-            {
-                System.out.println(commands[0]);
-            }
-        }
+            String line = this.scan.nextLine();
+            CommandExecution commando = new CommandExecution(hashboy, memboy);
+            String[] commands = line.trim().split("\\s+");
+                if (commands[0].equals("insert")) {
+                    String seqId = commands[1];
+                    int seqLength = Integer.parseInt(commands[2]);
+                    line = this.scan.nextLine();
+                    commando.insert(seqId, line);
+                    System.out.println("Sequence ID" + seqId);
+                    System.out.println("Sequence" + line);
+                    
+                }/**
+                else if (commands[0].equals("remove")) {
+                    System.out.println(commands[0]);
+                }
+                else if (commands[0].equals("search")) {
+                    System.out.println(commands[0]);
+                }
+                else if (commands[0].equals("print")) {
+                    System.out.println(commands[0]);
+                }**/
+            
         }
 
     }

@@ -21,11 +21,20 @@ public class DNAdbase
     {
         //read file as an argument
         String fileName = args[0];
-        File file = new File(fileName);
-        Scanner sc = new Scanner(file);
+        File file = new File(fileName);   
+        File memFile = new File(args[2]);
+        HashTable hash = new HashTable(Integer.parseInt(args[1]));
+        MemoryManager mem = new MemoryManager(memFile);
         
-        Parser parse = new Parser(sc);
+        Parser parse = new Parser(file, hash, mem);
         parse.parseString();
+        for (int i = 0; i < 512; i++)
+        {
+            if (hash.getRecords()[i] != null)
+            {
+                System.out.println("Not Null");
+            }
+        }
        
     }
 }
