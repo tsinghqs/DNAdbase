@@ -88,7 +88,10 @@ public class MemoryManager
                 offset = freeBlock.getOffset();
                 freeBlock.setOffset(offset + getNumBytes(item));
                 freeBlock.setLength(freeBlock.getLength() - item.length());
-                freelist.remove(freeBlock);
+                if (freeBlock.getLength() == 0)
+                {
+                    freelist.remove(freeBlock);
+                }
                 return offset;
             }
         }
