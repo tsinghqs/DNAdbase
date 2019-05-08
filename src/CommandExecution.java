@@ -120,7 +120,7 @@ public class CommandExecution {
      */
     public void remove(String id) throws IOException
     {
-        boolean found = this.tab.hasStringID(id);
+        boolean found = this.search(id, false);
         if (found) {
             // remove vikram
             Record rem = this.tab.removeHash(id);
