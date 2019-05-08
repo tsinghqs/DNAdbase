@@ -137,7 +137,10 @@ public class MemoryManager
         if (freeBlock.getBytes() == 0) {
             freelist.remove(index);
         }
-        updateFreelist(); // maybe?
+        if (freelist.size() != 0)
+        {
+            updateFreelist(); // maybe?
+        }
         return offset;
     }
     
