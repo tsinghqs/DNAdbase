@@ -72,6 +72,7 @@ public class Handle {
      */
     public void setLength(int newLen) {
         this.length = newLen;
+        this.bytes = getNumBytes(this.length);
     }
 
 
