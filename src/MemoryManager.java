@@ -219,8 +219,10 @@ public class MemoryManager
             Handle nextBlock = freelist.get(i + 1);
             if (isAdjacent(thisBlock, nextBlock))
             {
-                thisBlock.setBytes(thisBlock.getBytes() 
-                    + nextBlock.getBytes());
+                //thisBlock.setBytes(thisBlock.getBytes() 
+                //    + nextBlock.getBytes());
+                thisBlock.setLength(thisBlock.getLength() 
+                    + nextBlock.getLength()); 
                 freelist.remove(i + 1);
                 i = -1;
             }
@@ -229,8 +231,8 @@ public class MemoryManager
         // decrement memoryFile size if needed
         Handle lastBlock = freelist.peekLast();
         int offset = lastBlock.getOffset();
-        //int bytes = getNumBytes(lastBlock.getLength());
-        int bytes = lastBlock.getBytes();
+        int bytes = getNumBytes(lastBlock.getLength());
+        //int bytes = lastBlock.getBytes();
         if (offset + bytes == memoryFile.length())
         {
             freelist.removeLast();
@@ -248,8 +250,8 @@ public class MemoryManager
     public boolean isAdjacent(Handle freeblock1, Handle freeblock2)
     {
         int offset1 = freeblock1.getOffset();
-        //int fb1bytes = getNumBytes(freeblock1.getLength());
-        int bytes1 = freeblock1.getBytes();
+        int bytes1 = getNumBytes(freeblock1.getLength());
+        //int bytes1 = freeblock1.getBytes();
         int offset2 = freeblock2.getOffset();
         return (offset1 + bytes1) == offset2;
     }
