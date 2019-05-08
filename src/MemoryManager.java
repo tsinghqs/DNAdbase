@@ -77,31 +77,15 @@ public class MemoryManager
      */
     public int firstFit(String item) throws IOException
     {
-//        int offset = (int) memoryFile.length();
-//        
-//        if (freelist.size() == 0)
+        int offset = (int) memoryFile.length();
+        
+        if (freelist.size() == 0)
+        {
+            return offset;
+        }
+        
+//        for (Handle freeBlock : freelist)
 //        {
-//            return offset;
-//        }
-//        
-////        for (Handle freeBlock : freelist)
-////        {
-////            if (freeBlock.getLength() >= item.length())
-////            {
-////                offset = freeBlock.getOffset();
-////                freeBlock.setOffset(offset + getNumBytes(item));
-////                freeBlock.setLength(freeBlock.getLength() - item.length());
-////                if (freeBlock.getLength() == 0)
-////                {
-////                    freelist.remove(freeBlock);
-////                }
-////                return offset;
-////            }
-////        }
-//        
-//        for (int i = 0; i < freelist.size(); i++)
-//        {
-//            Handle freeBlock = freelist.get(i);
 //            if (freeBlock.getLength() >= item.length())
 //            {
 //                offset = freeBlock.getOffset();
@@ -114,34 +98,50 @@ public class MemoryManager
 //                return offset;
 //            }
 //        }
-//        
-//        return offset;
-        int numBytes = getNumBytes(item);
-        int index = -1;
-        for (int i = 0; i < freelist.size(); i++) {
+        
+        for (int i = 0; i < freelist.size(); i++)
+        {
             Handle freeBlock = freelist.get(i);
-            if (numBytes <= freeBlock.getBytes()) {
-                index = i;
-                break;
+            if (freeBlock.getLength() >= item.length())
+            {
+                offset = freeBlock.getOffset();
+                freeBlock.setOffset(offset + getNumBytes(item));
+                freeBlock.setLength(freeBlock.getLength() - item.length());
+                if (freeBlock.getLength() == 0)
+                {
+                    freelist.remove(freeBlock);
+                }
+                return offset;
             }
         }
         
-        if (index == -1) {
-            return (int) memoryFile.length();
-        }
-        
-        Handle freeBlock = freelist.get(index);
-        int offset = freeBlock.getOffset();
-        freeBlock.setOffset(freeBlock.getOffset() + numBytes);  // should be here
-        freeBlock.setBytes(freeBlock.getBytes() - numBytes);
-        if (freeBlock.getBytes() == 0) {
-            freelist.remove(index);
-        }
-        if (freelist.size() != 0)
-        {
-            updateFreelist(); // maybe?
-        }
         return offset;
+//        int numBytes = getNumBytes(item);
+//        int index = -1;
+//        for (int i = 0; i < freelist.size(); i++) {
+//            Handle freeBlock = freelist.get(i);
+//            if (numBytes <= freeBlock.getBytes()) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        
+//        if (index == -1) {
+//            return (int) memoryFile.length();
+//        }
+//        
+//        Handle freeBlock = freelist.get(index);
+//        int offset = freeBlock.getOffset();
+//        freeBlock.setOffset(freeBlock.getOffset() + numBytes);  // should be here
+//        freeBlock.setBytes(freeBlock.getBytes() - numBytes);
+//        if (freeBlock.getBytes() == 0) {
+//            freelist.remove(index);
+//        }
+//        if (freelist.size() != 0)
+//        {
+//            updateFreelist(); // maybe?
+//        }
+//        return offset;
     }
     
     /**
