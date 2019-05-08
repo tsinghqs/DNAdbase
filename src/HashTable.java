@@ -124,7 +124,7 @@ public class HashTable {
             if (recs[i] != null && !recs[i].isTombstone()) {
                 if (this.mems.getHandleString(recs[i].getSeqIDHandle()).equals(
                     compare)) {
-                    return mems.getHandleString(recs[i].getSeqHandle());
+                    return this.mems.getHandleString(recs[i].getSeqHandle());
                 }
             }
         }
