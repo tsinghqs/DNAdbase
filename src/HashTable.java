@@ -128,7 +128,7 @@ public class HashTable {
                 }
             }
         }
-        return "";
+        return "fail";
     }
     
     /**

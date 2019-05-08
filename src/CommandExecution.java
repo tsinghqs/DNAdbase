@@ -73,7 +73,7 @@ public class CommandExecution {
     public void search(String id) throws IOException
     {
         String found = this.tab.hasID(id);
-        if (!found.equals("")) {
+        if (!(found.equals("fail"))) {
             System.out.println("Sequence found: " + found);
         }
         else {
