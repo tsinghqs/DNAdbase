@@ -78,7 +78,7 @@ public class CommandExecution {
      * 
      */
 
-    public void search(String id, boolean check) throws IOException
+   /** public void search(String id, boolean check) throws IOException
 
     {
 
@@ -96,14 +96,14 @@ public class CommandExecution {
 
         }
 
-    }
+    }**/
     /**
      * Search method
      * @param id the string we are searching for
      * @param boolean print or not
      * @throws IOException io exception
      */
-    /**
+    
     public boolean search(String id, boolean printIt) throws IOException {
         int homIndx = (int)this.sfold(id);
         if (this.tab.getRecords()[homIndx] != null && !this.tab
@@ -143,7 +143,7 @@ public class CommandExecution {
         }
         return false;
 
-    }**/
+    }
 
 
     /**
@@ -153,7 +153,7 @@ public class CommandExecution {
      */
     public void remove(String id) throws IOException
     {
-        boolean found = this.tab.hasStringID(id);
+        boolean found = this.search(id, false);
         if (found) {
             // remove vikram
             Record rem = this.tab.removeHash(id);
