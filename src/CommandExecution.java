@@ -65,12 +65,45 @@ public class CommandExecution {
 
     }
     
+    
+
+    /**
+     * * Search method
+     * 
+     * @param id
+     *            the string we are searching for
+     * 
+     * @throws IOException
+     *             io exception
+     * 
+     */
+
+    public void search(String id, boolean check) throws IOException
+
+    {
+
+        String found = this.tab.hasID(id);
+
+        if (!(found.equals("fail"))) {
+
+            System.out.println("Sequence found: " + found);
+
+        }
+
+        else {
+
+            System.out.println("SequenceID " + id + " not found");
+
+        }
+
+    }
     /**
      * Search method
      * @param id the string we are searching for
      * @param boolean print or not
      * @throws IOException io exception
      */
+    /**
     public boolean search(String id, boolean printIt) throws IOException {
         int homIndx = (int)this.sfold(id);
         if (this.tab.getRecords()[homIndx] != null && !this.tab
@@ -110,7 +143,7 @@ public class CommandExecution {
         }
         return false;
 
-    }
+    }**/
 
 
     /**
@@ -120,7 +153,7 @@ public class CommandExecution {
      */
     public void remove(String id) throws IOException
     {
-        boolean found = this.search(id, false);
+        boolean found = this.tab.hasStringID(id);
         if (found) {
             // remove vikram
             Record rem = this.tab.removeHash(id);
