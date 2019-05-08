@@ -17,7 +17,7 @@ public class Record
      * The handle for the sequence.
      */
     private Handle seqHandle;
-    private boolean tombstone = false;
+    private boolean tombstone;
     
     /**
      * Record's constructor.
@@ -28,6 +28,7 @@ public class Record
     {
         seqIDHandle = seqIDH;
         seqHandle = seqH;
+        tombstone = false;
     }
 
     /**
