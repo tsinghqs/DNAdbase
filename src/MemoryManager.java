@@ -42,20 +42,23 @@ public class MemoryManager
         int length = item.length();
         
         byte[] rep = getBinaryRep(item);
-        int numBytes = rep.length;
+        //int numBytes = rep.length;
         int offset = firstFit(item);
         //if (offset == eof)
-        if (offset == memoryFile.length())
-        {
-            memoryFile.seek(memoryFile.length());
-            memoryFile.write(rep);
-        }
-        else
-        {
-            memoryFile.write(rep, offset, numBytes);
-        }
+//        if (offset == memoryFile.length())
+//        {
+//            memoryFile.seek(memoryFile.length());
+//            memoryFile.write(rep);
+//        }
+//        else
+//        {
+//            memoryFile.write(rep, offset, numBytes);
+//        }
         
         //eof = (int)memoryFile.length();
+        
+        memoryFile.seek(offset);
+        memoryFile.write(rep);
         
         Handle itemHandle = new Handle(offset, length);
         return itemHandle;
@@ -81,8 +84,24 @@ public class MemoryManager
             return offset;
         }
         
-        for (Handle freeBlock : freelist)
+//        for (Handle freeBlock : freelist)
+//        {
+//            if (freeBlock.getLength() >= item.length())
+//            {
+//                offset = freeBlock.getOffset();
+//                freeBlock.setOffset(offset + getNumBytes(item));
+//                freeBlock.setLength(freeBlock.getLength() - item.length());
+//                if (freeBlock.getLength() == 0)
+//                {
+//                    freelist.remove(freeBlock);
+//                }
+//                return offset;
+//            }
+//        }
+        
+        for (int i = 0; i < freelist.size(); i++)
         {
+            Handle freeBlock = freelist.get(i);
             if (freeBlock.getLength() >= item.length())
             {
                 offset = freeBlock.getOffset();
