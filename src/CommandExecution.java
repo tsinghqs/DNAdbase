@@ -60,7 +60,7 @@ public class CommandExecution {
             }
         }
         else {
-            System.out.println("SequenceID " + sequenceId + " already exists");
+            System.out.println("SequenceID " + sequenceId + " exists");
         }
 
     }
@@ -110,8 +110,7 @@ public class CommandExecution {
     public void print() throws IOException {
         LinkedList<Handle> list = 
             this.mem.getFreelist();
-        System.out.print("Sequence IDs:");
-        System.out.println();
+        System.out.println("Sequence IDs:");
         Record[] recs = this.tab.getRecords();
         if (this.numRecords > 0) {
             for (int i = 0; i < this.hashTableSize; i++) {
